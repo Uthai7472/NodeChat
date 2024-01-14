@@ -20,19 +20,19 @@ const io = socketio(server)  // Install socket for server
 io.on('connection', socket => {
     console.log("New user connected");
 
-    socket.username = "Anonymous";
+    socket.user = "Anonymous";
 
     socket.on("change_username", data => {
-        socket.username = data.username
+        socket.user = data.username
     })
 
     // handle the new messsage  event
     socket.on("new_message", data => {
         console.log("new message");
-        io.sockets.emit("receive_message", { message: data.message, username: socket.username })
+        io.sockets.emit("receive_message", { message: data.message, username: socket.user, dateTime: data.dateTime })
     })
 
     socket.on('typing', data => {
-        socket.broadcast.emit('typing', { username: socket.username });
+        socket.broadcast.emit('typing', { username: socket.user });
     })
 });
